@@ -34,9 +34,6 @@ person14Request.send();
 const filmsRequest = new XMLHttpRequest();
 filmsRequest.addEventListener("load", function() {
   filmsObject = JSON.parse(this.responseText);
-  //   console.log(filmsObject);
-  //   console.log(filmsObject.results[0]);
-  //   console.log(filmsObject.results[0].title);
   for (i = 0; i < filmsObject.results.length; i++) {
     let film = document.createElement("li");
     film.className = "film";
@@ -51,15 +48,22 @@ filmsRequest.addEventListener("load", function() {
     let ul = document.createElement("ul");
     ul.className = "filmPlanets";
     film.appendChild(ul);
-    for (j = 0; j < filmsObject.results[i].planets[j]; j++) {
+    for (j = 0; j < filmsObject.results[i].planets.length; j++) {
       let li = document.createElement("li");
       li.className = "planet";
       ul.appendChild(li);
       let h4 = document.createElement("h4");
       h4.className = "planetName";
       li.appendChild(h4);
+      let planetRequest = new XMLHttpRequest();
+      planetRequest.addEventListener("load", function() {
+        planetObject = JSON.parse(this.responseText);
+        h4.innerHTML = planetObject.name;
+      });
+      planetRequest.open("GET", filmsObject.results[i].planets[j]);
+      planetRequest.send();
     }
   }
 });
-filmsRequest.open("GET", "https://swapi.co/api/films/", true);
+filmsRequest.open("GET", "https://swapi.co/api/films/");
 filmsRequest.send();
