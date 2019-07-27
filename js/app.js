@@ -30,3 +30,36 @@ person14Request.addEventListener("load", function() {
 });
 person14Request.open("GET", "https://swapi.co/api/people/14/");
 person14Request.send();
+
+const filmsRequest = new XMLHttpRequest();
+filmsRequest.addEventListener("load", function() {
+  filmsObject = JSON.parse(this.responseText);
+  //   console.log(filmsObject);
+  //   console.log(filmsObject.results[0]);
+  //   console.log(filmsObject.results[0].title);
+  for (i = 0; i < filmsObject.results.length; i++) {
+    let film = document.createElement("li");
+    film.className = "film";
+    filmList.appendChild(film);
+    let h2 = document.createElement("h2");
+    h2.className = "filmTitle";
+    h2.innerHTML = filmsObject.results[i].title;
+    film.appendChild(h2);
+    let h3 = document.createElement("h3");
+    h3.innerHTML = "Planets";
+    film.appendChild(h3);
+    let ul = document.createElement("ul");
+    ul.className = "filmPlanets";
+    film.appendChild(ul);
+    for (j = 0; j < filmsObject.results[i].planets[j]; j++) {
+      let li = document.createElement("li");
+      li.className = "planet";
+      ul.appendChild(li);
+      let h4 = document.createElement("h4");
+      h4.className = "planetName";
+      li.appendChild(h4);
+    }
+  }
+});
+filmsRequest.open("GET", "https://swapi.co/api/films/", true);
+filmsRequest.send();
